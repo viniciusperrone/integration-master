@@ -8,7 +8,5 @@ if __name__ == '__main__':
 
     wpp_service = CallMeBotService()
     response = wpp_service.send_message(
-        message=f'Cotação do Bitcoin: {conversion}'
+        message=f'Cotação do Bitcoin: R$ {conversion}'
     )
-
-    print(response)
