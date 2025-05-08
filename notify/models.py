@@ -10,7 +10,9 @@ class NotifyOrderModel:
     def create_notify_order(event_type, event):
         notify_order_data = {
             'event_type': event_type,
-            'event': event
+            'event': event,
+            'created_at': dt.now(),
+            'updated_at': None,
         }
 
         return NotifyOrderModel.collection.insert_one(notify_order_data)
