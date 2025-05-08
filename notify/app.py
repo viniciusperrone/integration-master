@@ -1,7 +1,13 @@
 from flask import Flask, request, jsonify
 
+from config.mongo import mongo
+
 
 app = Flask(__name__)
+
+app.config["MONGO_URI"] = "mongodb://localhost:27017/notify"
+
+mongo.init_app(app)
 
 @app.route('/order/webhook', methods=['POST'])
 def order_webhook():
