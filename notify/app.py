@@ -1,12 +1,18 @@
+import os
 import json
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+
 
 from config.mongo import mongo
+from services.callmebot import CallMeBotService
+from utils.message import outflow_event_message
 
+load_dotenv()
 
 app = Flask(__name__)
 
-app.config["MONGO_URI"] = "mongodb://mongodb:27017/notify"
+app.config["MONGO_URI"] = os.getenv("MONGO_URI", "mongodb://mongodb:27017/notify")
 
 mongo.init_app(app)
 
@@ -23,6 +29,24 @@ def order_webhook():
         event_type=data.get('event_type'),
         event=json.dumps(data, ensure_ascii=False),
     )
+
+    product_name = data.get('product')
+    quantity = data.get('quantity')
+    product_cost_price = data.get('product_cost_price')
+    product_selling_price = data.get('product_selling_price')
+    total_value = product_selling_price * quantity
+    profit_value = total_value - (product_cost_price * quantity)
+
+    message = outflow_event_message.format(
+        product_name,
+        quantity,
+        total_value,
+        profit_value
+    )
+
+    callmebot = CallMeBotService()
+
+    callmebot.send_message(message)
 
     return jsonify({
         'status': 'success',
