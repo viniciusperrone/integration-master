@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 
 
@@ -45,13 +45,21 @@ def order_webhook():
         profit_value
     )
 
+    html_message = render_template(
+        'outflow_email.html',
+        product_name=product_name,
+        quantity=quantity,
+        total_value=total_value,
+        profit_value=profit_value
+    )
+
     callmebot = CallMeBotService()
     dispatch_email = DispatchEmail()
 
     callmebot.send_message(message)
     dispatch_email.send_email(
         subject='Nova Saída (SGE)',
-        body=message,
+        body=html_message,
         recipient_email='perronevinicius2018@gmail.com'
     )
 

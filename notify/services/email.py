@@ -25,7 +25,7 @@ class DispatchEmail:
         email_message['From'] = self.__email_host
         email_message['To'] = recipient_email
 
-        email_message.set_content(body)
+        email_message.add_alternative(body, subtype='html')
 
         try:
             with smtplib.SMTP(self.__email_host, self.__email_port) as smtp:
