@@ -9,7 +9,7 @@ load_dotenv()
 
 class DispatchEmail:
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.__email_host = os.getenv('EMAIL_HOST')
         self.__email_port = os.getenv('EMAIL_PORT')
         self.__email_host_user = os.getenv('EMAIL_HOST_USER')

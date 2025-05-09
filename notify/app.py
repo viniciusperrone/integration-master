@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from config.mongo import mongo
 from services.callmebot import CallMeBotService
+from services.email import DispatchEmail
 from utils.message import outflow_event_message
 
 load_dotenv()
@@ -45,8 +46,14 @@ def order_webhook():
     )
 
     callmebot = CallMeBotService()
+    dispatch_email = DispatchEmail()
 
     callmebot.send_message(message)
+    dispatch_email.send_email(
+        subject='Nova Saída (SGE)',
+        body=message,
+        recipient_email='perronevinicius2018@gmail.com'
+    )
 
     return jsonify({
         'status': 'success',
