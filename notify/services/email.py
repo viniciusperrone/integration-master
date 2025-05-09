@@ -15,6 +15,9 @@ class DispatchEmail:
         self.__email_host_user = os.getenv('EMAIL_HOST_USER')
         self.__email_host_password = os.getenv('EMAIL_HOST_PASSWORD')
 
+        if not all([self.__email_host, self.__email_port, self.__email_host_user, self.__email_host_password]):
+            raise ValueError("Missing required email configuration in environment variables.")
+
     def send_email(self, subject, recipient_email, body):
         email_message = EmailMessage()
 
